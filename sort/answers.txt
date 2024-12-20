@@ -1,0 +1,6 @@
+sort1 uses: Bubble sort
+How do you know?: it comparably had the least real time when the numbers were sorted, especially for 5,000sorted
+sort2 uses: Merge sort
+How do you know?: when numbers were sorted its real time was less than for sort 1 but greater than for sort 1. it had the least running time for bigger numbers, even for 50,000 sorted.
+sort3 uses: Selection sort
+How do you know?: it had the biggest real time for the most of the numbers despite sorted or random
