@@ -215,18 +215,18 @@ void print_winner(void)
     // TODO
     for (int i = 0; i < candidate_count; i++)
     {
-        bool is_locked = true;
+        bool is_locked = false;
 
         for (int j = 0; j < candidate_count; j++)
         {
-            if (locked[i][j])
+            if (locked[j][i])
             {
-                is_locked = false;
+                is_locked = true;
                 break;
             }
         }
 
-        if (is_locked)
+        if (!is_locked)
         {
             printf("%s\n", candidates[i]);
             return;
