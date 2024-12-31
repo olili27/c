@@ -1,7 +1,7 @@
 #include "helpers.h"
 #include <math.h>
 
-#define CAP 256
+#define CAP 255
 #define MAX_BOX_COMPONENTS 9
 
 typedef struct  
@@ -44,16 +44,13 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             // Compute sepia values
-            // int sepiaRed = (int)roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue);
-            int sepiaRed = (int)(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue + 0.5);
+            int sepiaRed = (int)roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue);
             sepiaRed = fmin(sepiaRed, CAP);
 
-            // int sepiaGreen = (int)roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue);
-            int sepiaGreen = (int)(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue + 0.5);
+            int sepiaGreen = (int)roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue);
             sepiaGreen = fmin(sepiaGreen, CAP);
 
-            // int sepiaBlue = (int)roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue);
-            int sepiaBlue = (int)(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue + 0.5);
+            int sepiaBlue = (int)roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue);
             sepiaBlue = fmin(sepiaBlue, CAP);
 
             // Update pixel with sepia values
