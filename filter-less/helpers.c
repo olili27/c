@@ -44,13 +44,16 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             // Compute sepia values
-            int sepiaRed = (int)roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue);
+            // int sepiaRed = (int)roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue);
+            int sepiaRed = (int)(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue + 0.5);
             sepiaRed = fmin(sepiaRed, CAP);
-            
-            int sepiaGreen = (int)roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue);
+
+            // int sepiaGreen = (int)roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue);
+            int sepiaGreen = (int)(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue + 0.5);
             sepiaGreen = fmin(sepiaGreen, CAP);
 
-            int sepiaBlue = (int)roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue);
+            // int sepiaBlue = (int)roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue);
+            int sepiaBlue = (int)(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue + 0.5);
             sepiaBlue = fmin(sepiaBlue, CAP);
 
             // Update pixel with sepia values
@@ -91,18 +94,18 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
         }
     }
 
-    POINT points[MAX_BOX_COMPONENTS];
-
-    for (int i = 0; i < MAX_BOX_COMPONENTS; i++)
-    {
-        points[i].x = -1;
-        points[i].y = -1;
-    }
-
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
+            POINT points[MAX_BOX_COMPONENTS];
+
+            for (int k = 0; k < MAX_BOX_COMPONENTS; k++)
+            {
+                points[k].x = -1;
+                points[k].y = -1;
+            }
+
             add_pixel_value_indices(height, width, copy, i, j, points);
             image[i][j] = get_average(height, width, copy, points);
         }
@@ -149,7 +152,7 @@ RGBTRIPLE get_average(int height, int width, RGBTRIPLE image[height][width], POI
     for (int i = 0; i < MAX_BOX_COMPONENTS; i++)
     {
         POINT p = points[i];
-        if (p.x != -1)
+        if (p.x != -1 && p.y != -1)
         {
             red_sum += image[p.x][p.y].rgbtRed;
             green_sum += image[p.x][p.y].rgbtGreen;
@@ -168,7 +171,7 @@ RGBTRIPLE get_average(int height, int width, RGBTRIPLE image[height][width], POI
 
 void add_point(int height, int width, RGBTRIPLE image[height][width], POINT point, POINT points[], int current_index)
 {
-    if (point.x >= 0 && point.y >= 0 && point.x < width && point.y < height)
+    if (point.x >= 0 && point.y >= 0 && point.x < height && point.y < width)
     {
         points[current_index] = point;
     }
