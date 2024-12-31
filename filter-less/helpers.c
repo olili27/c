@@ -1,7 +1,7 @@
 #include "helpers.h"
 #include <math.h>
 
-#define MODULO 256
+#define CAP 256
 #define MAX_BOX_COMPONENTS 9
 
 typedef struct  
@@ -25,7 +25,8 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             // Take average of red, green, and blue
-            int avg = (int)(roundf(image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3.0);
+            int avg = (int)roundf((image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3.0);
+            // int avg = (int)((image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3.0 + 0.5);
 
             // Update pixel values
             image[i][j].rgbtBlue  = avg;
@@ -43,14 +44,14 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             // Compute sepia values
-            int sepiaRed = (int)(roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue));
-            sepiaRed %= MODULO;
+            int sepiaRed = (int)roundf(.393 * image[i][j].rgbtRed + .769 * image[i][j].rgbtGreen + .189 * image[i][j].rgbtBlue);
+            sepiaRed = fmin(sepiaRed, CAP);
+            
+            int sepiaGreen = (int)roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue);
+            sepiaGreen = fmin(sepiaGreen, CAP);
 
-            int sepiaGreen = (int)(roundf(.349 * image[i][j].rgbtRed + .686 * image[i][j].rgbtGreen + .168 * image[i][j].rgbtBlue));
-            sepiaGreen %= MODULO;
-
-            int sepiaBlue = (int)(roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue));
-            sepiaBlue %= MODULO;
+            int sepiaBlue = (int)roundf(.272 * image[i][j].rgbtRed + .534 * image[i][j].rgbtGreen + .131 * image[i][j].rgbtBlue);
+            sepiaBlue = fmin(sepiaBlue, CAP);
 
             // Update pixel with sepia values
             image[i][j].rgbtBlue = sepiaBlue;
@@ -143,18 +144,24 @@ RGBTRIPLE get_average(int height, int width, RGBTRIPLE image[height][width], POI
     int red_sum = 0;
     int blue_sum = 0;
     int green_sum = 0;
+    int count = 0;
 
     for (int i = 0; i < MAX_BOX_COMPONENTS; i++)
     {
         POINT p = points[i];
-        red_sum += ((p.x == -1) ? 0 : image[p.x][p.y].rgbtRed);
-        green_sum += ((p.x == -1) ? 0 : image[p.x][p.y].rgbtGreen);
-        blue_sum += ((p.x == -1) ? 0 : image[p.x][p.y].rgbtBlue);
+        if (p.x != -1)
+        {
+            red_sum += image[p.x][p.y].rgbtRed;
+            green_sum += image[p.x][p.y].rgbtGreen;
+            blue_sum += image[p.x][p.y].rgbtBlue;
+
+            count++;
+        }
     }
 
-    int red_avg = (int)(roundf(red_sum / 9));
-    int green_avg = (int)(roundf(green_sum / 9));
-    int blue_avg = (int)(roundf(blue_sum / 9));
+    int red_avg = (int)(roundf(red_sum / (count * 1.0)));
+    int green_avg = (int)(roundf(green_sum / (count * 1.0)));
+    int blue_avg = (int)(roundf(blue_sum / (count * 1.0)));
 
     return (RGBTRIPLE) {.rgbtBlue = blue_avg, .rgbtGreen = green_avg, .rgbtRed = red_avg};
 }
