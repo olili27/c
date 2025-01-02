@@ -1,14 +1,21 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdint.h>
 
 typedef struct 
 {
-    int x;
-    int y;
+    int8_t x;
+    int8_t y;
 } POINT;
 
 int main(void)
 {
-    printf("%f\n", roundf(2.54534543));
-    printf("%i\n", (int) roundf(2.54534543));
+    uint16_t age = 25;
+    uint8_t age2 = 199;
+    char buffer[8];
+
+    sprintf(buffer, "%03i.jpg", age);
+    printf("%s\n", buffer);
+    sprintf(buffer, "%03i.jpg", age2);
+    printf("%s\n", buffer);
 }
