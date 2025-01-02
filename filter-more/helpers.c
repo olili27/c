@@ -1,7 +1,6 @@
 #include <math.h>
 #include <string.h>
-#include <inttypes.h>
-#include <stdio.h>
+
 #include "helpers.h"
 
 #define CAP 255
