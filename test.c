@@ -13,6 +13,7 @@ int main(void)
     uint16_t age = 25;
     uint8_t age2 = 199;
     char buffer[8];
+    // char buffer[8];
 
     sprintf(buffer, "%03i.jpg", age);
     printf("%s\n", buffer);
