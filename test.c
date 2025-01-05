@@ -1,6 +1,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 typedef struct 
 {
@@ -8,15 +11,23 @@ typedef struct
     int8_t y;
 } POINT;
 
-int main(void)
-{
-    uint16_t age = 25;
-    uint8_t age2 = 199;
-    char buffer[8];
-    // char buffer[8];
+uint32_t dict_size;
 
-    sprintf(buffer, "%03i.jpg", age);
-    printf("%s\n", buffer);
-    sprintf(buffer, "%03i.jpg", age2);
-    printf("%s\n", buffer);
+int main(int argc, char *argv[])
+{
+   char word2[10];
+   char *word = "show";
+
+   if (!strcpy(word2, word))
+   {
+    printf("not copied\n");
+    return 1;
+   }
+
+   printf("%s\n", word2);
+   printf("%s\n", word);
+   printf("%li\n", strlen(word2));
+   printf("%li\n", sizeof(word2));
+   printf("%i\n", strcmp(word2, "word"));
+   printf("%i\n", dict_size);
 }
